@@ -19,6 +19,7 @@ const createSMSUrl = (userNumber, username) => {
 const sendSMSPostRequest = async (url) => {
     try {
         const sendSMS = await axios.post(url);
+        console.log({sendSMS: sendSMS.data})
         return sendSMS;
     } catch (error) {
         if (error.response) {
@@ -26,16 +27,17 @@ const sendSMSPostRequest = async (url) => {
         } else if (error.request) {
             console.log({ errorRequest: error.request });
         } else {
-            console.log({ error });
+            console.log({ errorrr });
         }
     }
 }
 
-const signupSuccessSMS = async (userNumber, username) => {
+const registerSuccessSMS = async (userNumber, username) => {
+    // This function is called in the rabbitmq messaging module/
     const url = createSMSUrl(userNumber, username);
     const sendSMS = await sendSMSPostRequest(url);
     return sendSMS;
 }
 
 
-module.exports = { signupSuccessSMS }
+module.exports = { registerSuccessSMS }
