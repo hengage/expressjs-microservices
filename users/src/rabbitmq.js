@@ -15,10 +15,10 @@ const messageQueue = (queuename, message) => {
 
             // Declare a queue
             channel.assertQueue(queuename, {
-                durable: false
+                durable: true
             });
 
-            await channel.sendToQueue(queuename, Buffer.from(JSON.stringify(message)));
+            channel.sendToQueue(queuename, Buffer.from(JSON.stringify(message)));
             console.log('Message sent:', message)
             // setTimeout( () => {
             //     connection.close();

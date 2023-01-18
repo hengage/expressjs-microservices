@@ -1,5 +1,7 @@
+
 const User = require('./model')
 const { messageQueue } = require('./rabbitmq')
+
 
 const register = async (req, res) => {
     try {
@@ -9,7 +11,7 @@ const register = async (req, res) => {
         res.status(201).json({
              message: 'User successfully registered', newUser 
         })
-        messageQueue('user.register', {newUser})
+        messageQueue('userQueue', {newUser, type: 'user.register'})
     } catch (error) {
         console.error({error})
         return res.status(500).json({message: error})

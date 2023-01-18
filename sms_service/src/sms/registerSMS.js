@@ -1,5 +1,4 @@
 const axios = require('axios')
-const { consumeQueue } = require('../messageQueue')
 
 const createSMSUrl = (userNumber, username) => {
     const url = new URL(`https://www.bulksmsnigeria.com/api/v2/sms/create`);
@@ -19,7 +18,7 @@ const createSMSUrl = (userNumber, username) => {
 const sendSMSPostRequest = async (url) => {
     try {
         const sendSMS = await axios.post(url);
-        console.log({sendSMS: sendSMS.data})
+        console.log({ sendSMS: sendSMS.data })
         return sendSMS;
     } catch (error) {
         if (error.response) {
@@ -32,19 +31,15 @@ const sendSMSPostRequest = async (url) => {
     }
 }
 
-const registerSuccessSMS = async () => {
-    consumeQueue("user.register", (message) => {
-        const data = JSON.parse(message.content.toString());
-        const { phoneNumber, username } = data.newUser;
-        console.log({data})
-        console.log({username})
-    
-        // use the user details to send the SMS
-        const url = createSMSUrl(phoneNumber, username);
-        const sendSMS =  sendSMSPostRequest(url);
-        return sendSMS;
-    });
-  
+const registerSuccessSMS = async (data) => {
+    const { phoneNumber, username } = data.newUser;
+    console.log({ data })
+    console.log({ username })
+
+    // use the user details to send the SMS
+    const url = createSMSUrl(phoneNumber, username);
+    const sendSMS = sendSMSPostRequest(url);
+    return sendSMS;
 }
 
 
